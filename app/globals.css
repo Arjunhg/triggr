@@ -1,26 +1,423 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Core backgrounds - Deep, clean, professional */
+  --background: oklch(0.985 0.002 240);
+  --foreground: oklch(0.15 0.01 240);
+  
+  /* Card surfaces with subtle depth */
+  --card: oklch(0.98 0.003 240);
+  --card-foreground: oklch(0.15 0.01 240);
+  
+  /* Popover/Modal surfaces */
+  --popover: oklch(0.995 0.001 240);
+  --popover-foreground: oklch(0.15 0.01 240);
+  
+  /* Primary - Intelligent cyan-blue (automation feel) */
+  --primary: oklch(0.65 0.18 220);
+  --primary-foreground: oklch(0.99 0 0);
+  
+  /* Secondary - Muted slate for hierarchy */
+  --secondary: oklch(0.94 0.01 240);
+  --secondary-foreground: oklch(0.35 0.02 240);
+  
+  /* Muted tones for subtle elements */
+  --muted: oklch(0.96 0.005 240);
+  --muted-foreground: oklch(0.5 0.02 240);
+  
+  /* Accent - Soft electric purple (intelligence indicator) */
+  --accent: oklch(0.75 0.12 280);
+  --accent-foreground: oklch(0.20 0.05 280);
+  
+  /* Destructive states */
+  --destructive: oklch(0.55 0.2 25);
+  --destructive-foreground: oklch(0.99 0 0);
+  
+  /* Borders and inputs - subtle, clean */
+  --border: oklch(0.92 0.01 240);
+  --input: oklch(0.94 0.01 240);
+  --ring: oklch(0.65 0.18 220);
+  
+  /* Chart colors - Automation flow palette */
+  --chart-1: oklch(0.65 0.18 220);  /* Primary cyan */
+  --chart-2: oklch(0.70 0.15 280);  /* Electric purple */
+  --chart-3: oklch(0.75 0.12 160);  /* Success green */
+  --chart-4: oklch(0.70 0.10 45);   /* Warm amber */
+  --chart-5: oklch(0.60 0.15 320);  /* Magenta accent */
+  
+  /* Sidebar - Slightly elevated surface */
+  --sidebar: oklch(0.975 0.003 240);
+  --sidebar-foreground: oklch(0.20 0.01 240);
+  --sidebar-primary: oklch(0.65 0.18 220);
+  --sidebar-primary-foreground: oklch(0.99 0 0);
+  --sidebar-accent: oklch(0.96 0.02 220);
+  --sidebar-accent-foreground: oklch(0.35 0.05 220);
+  --sidebar-border: oklch(0.93 0.01 240);
+  --sidebar-ring: oklch(0.65 0.18 220);
+  
+  /* ═══════════════════════════════════════════════════════════════
+     AUTOMATION-SPECIFIC VARIABLES
+     ═══════════════════════════════════════════════════════════════ */
+  
+  /* Glow colors for automation elements */
+  --glow-primary: oklch(0.65 0.18 220 / 0.4);
+  --glow-accent: oklch(0.75 0.12 280 / 0.3);
+  --glow-success: oklch(0.75 0.15 160 / 0.4);
+  
+  /* Node/connector colors */
+  --node-bg: oklch(0.99 0.002 240);
+  --node-border: oklch(0.88 0.02 220);
+  --connector-line: oklch(0.65 0.15 220 / 0.5);
+  --connector-active: oklch(0.65 0.18 220);
+  
+  /* Grid/Pattern colors */
+  --grid-line: oklch(0.90 0.01 240);
+  --grid-dot: oklch(0.80 0.02 220);
+  
+  /* Typography */
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-serif: 'Libre Baskerville', serif;
+  --font-mono: 'JetBrains Mono', 'IBM Plex Mono', monospace;
+  
+  /* Spacing & Sizing */
+  --radius: 0.5rem;
+  
+  /* Shadows - Soft, layered, professional */
+  --shadow-color: 220 30% 15%;
+  --shadow-2xs: 0 1px 2px -1px hsl(var(--shadow-color) / 0.05);
+  --shadow-xs: 0 1px 3px -1px hsl(var(--shadow-color) / 0.06);
+  --shadow-sm: 0 2px 4px -1px hsl(var(--shadow-color) / 0.06), 0 1px 2px -1px hsl(var(--shadow-color) / 0.04);
+  --shadow: 0 4px 6px -2px hsl(var(--shadow-color) / 0.06), 0 2px 4px -2px hsl(var(--shadow-color) / 0.04);
+  --shadow-md: 0 6px 10px -3px hsl(var(--shadow-color) / 0.08), 0 3px 6px -3px hsl(var(--shadow-color) / 0.05);
+  --shadow-lg: 0 10px 20px -5px hsl(var(--shadow-color) / 0.1), 0 4px 8px -4px hsl(var(--shadow-color) / 0.06);
+  --shadow-xl: 0 20px 30px -8px hsl(var(--shadow-color) / 0.12), 0 8px 12px -6px hsl(var(--shadow-color) / 0.08);
+  --shadow-2xl: 0 30px 50px -12px hsl(var(--shadow-color) / 0.2);
+  
+  /* Glow shadows for automation elements */
+  --shadow-glow-sm: 0 0 10px -2px var(--glow-primary);
+  --shadow-glow: 0 0 20px -4px var(--glow-primary);
+  --shadow-glow-lg: 0 0 30px -5px var(--glow-primary);
+  --shadow-glow-accent: 0 0 20px -4px var(--glow-accent);
+}
+
+.dark {
+  /* ═══════════════════════════════════════════════════════════════
+     DARK MODE - Deep space automation aesthetic
+     ═══════════════════════════════════════════════════════════════ */
+  
+  /* Core backgrounds - Deep, rich, immersive */
+  --background: oklch(0.12 0.015 250);
+  --foreground: oklch(0.95 0.01 240);
+  
+  /* Card surfaces with subtle elevation */
+  --card: oklch(0.16 0.02 250);
+  --card-foreground: oklch(0.95 0.01 240);
+  
+  /* Popover/Modal - Elevated surface */
+  --popover: oklch(0.18 0.02 250);
+  --popover-foreground: oklch(0.95 0.01 240);
+  
+  /* Primary - Vibrant cyan (automation pulse) */
+  --primary: oklch(0.72 0.19 210);
+  --primary-foreground: oklch(0.12 0.02 250);
+  
+  /* Secondary - Muted for hierarchy */
+  --secondary: oklch(0.22 0.02 250);
+  --secondary-foreground: oklch(0.85 0.01 240);
+  
+  /* Muted tones */
+  --muted: oklch(0.20 0.015 250);
+  --muted-foreground: oklch(0.65 0.02 240);
+  
+  /* Accent - Electric purple glow */
+  --accent: oklch(0.70 0.15 280);
+  --accent-foreground: oklch(0.95 0.01 280);
+  
+  /* Destructive */
+  --destructive: oklch(0.60 0.22 25);
+  --destructive-foreground: oklch(0.99 0 0);
+  
+  /* Borders - Subtle, defined */
+  --border: oklch(0.28 0.02 250);
+  --input: oklch(0.22 0.02 250);
+  --ring: oklch(0.72 0.19 210);
+  
+  /* Charts - Vivid automation palette */
+  --chart-1: oklch(0.72 0.19 210);
+  --chart-2: oklch(0.70 0.18 280);
+  --chart-3: oklch(0.75 0.16 160);
+  --chart-4: oklch(0.75 0.14 70);
+  --chart-5: oklch(0.68 0.18 320);
+  
+  /* Sidebar - Deep, sophisticated */
+  --sidebar: oklch(0.10 0.015 250);
+  --sidebar-foreground: oklch(0.90 0.01 240);
+  --sidebar-primary: oklch(0.72 0.19 210);
+  --sidebar-primary-foreground: oklch(0.12 0.02 250);
+  --sidebar-accent: oklch(0.20 0.03 210);
+  --sidebar-accent-foreground: oklch(0.85 0.02 210);
+  --sidebar-border: oklch(0.25 0.02 250);
+  --sidebar-ring: oklch(0.72 0.19 210);
+  
+  /* Glow colors - More prominent in dark mode */
+  --glow-primary: oklch(0.72 0.19 210 / 0.5);
+  --glow-accent: oklch(0.70 0.15 280 / 0.4);
+  --glow-success: oklch(0.75 0.16 160 / 0.5);
+  
+  /* Node/connector - Glowing in darkness */
+  --node-bg: oklch(0.18 0.02 250);
+  --node-border: oklch(0.35 0.04 210);
+  --connector-line: oklch(0.72 0.15 210 / 0.4);
+  --connector-active: oklch(0.72 0.19 210);
+  
+  /* Grid - Subtle tech pattern */
+  --grid-line: oklch(0.20 0.015 250);
+  --grid-dot: oklch(0.35 0.03 210);
+  
+  /* Shadows - Deeper, with glow */
+  --shadow-color: 250 50% 5%;
+  --shadow-glow-sm: 0 0 15px -2px var(--glow-primary);
+  --shadow-glow: 0 0 25px -4px var(--glow-primary);
+  --shadow-glow-lg: 0 0 40px -5px var(--glow-primary);
+  --shadow-glow-accent: 0 0 25px -4px var(--glow-accent);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+  --font-serif: var(--font-serif);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  --shadow-2xs: var(--shadow-2xs);
+  --shadow-xs: var(--shadow-xs);
+  --shadow-sm: var(--shadow-sm);
+  --shadow: var(--shadow);
+  --shadow-md: var(--shadow-md);
+  --shadow-lg: var(--shadow-lg);
+  --shadow-xl: var(--shadow-xl);
+  --shadow-2xl: var(--shadow-2xl);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* ═══════════════════════════════════════════════════════════════
+   AUTOMATION UI UTILITIES
+   Custom classes for the intelligent automation aesthetic
+   ═══════════════════════════════════════════════════════════════ */
+
+@layer utilities {
+  /* Glow effects for interactive elements */
+  .glow-primary {
+    box-shadow: var(--shadow-glow);
+  }
+  
+  .glow-primary-lg {
+    box-shadow: var(--shadow-glow-lg);
+  }
+  
+  .glow-accent {
+    box-shadow: var(--shadow-glow-accent);
+  }
+  
+  /* Animated gradient border */
+  .border-gradient {
+    position: relative;
+    background: var(--card);
+    border-radius: var(--radius);
+  }
+  
+  .border-gradient::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(
+      135deg,
+      oklch(0.72 0.19 210 / 0.5),
+      oklch(0.70 0.15 280 / 0.3),
+      oklch(0.72 0.19 210 / 0.5)
+    );
+    -webkit-mask: 
+      linear-gradient(#fff 0 0) content-box, 
+      linear-gradient(#fff 0 0);
+    mask: 
+      linear-gradient(#fff 0 0) content-box, 
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+  }
+  
+  /* Tech grid background */
+  .bg-grid {
+    background-image: 
+      linear-gradient(var(--grid-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+  
+  .bg-grid-sm {
+    background-image: 
+      linear-gradient(var(--grid-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+  
+  /* Dot pattern background */
+  .bg-dots {
+    background-image: radial-gradient(var(--grid-dot) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+  
+  /* Node card styling */
+  .node-card {
+    background: var(--node-bg);
+    border: 1px solid var(--node-border);
+    border-radius: var(--radius);
+    transition: all 0.3s ease;
+  }
+  
+  .node-card:hover {
+    border-color: var(--connector-active);
+    box-shadow: var(--shadow-glow-sm);
+  }
+  
+  /* Connector line styling */
+  .connector-line {
+    stroke: var(--connector-line);
+    stroke-width: 2;
+    fill: none;
+  }
+  
+  .connector-line-active {
+    stroke: var(--connector-active);
+    filter: drop-shadow(0 0 4px var(--glow-primary));
+  }
+  
+  /* Pulse animation for live indicators */
+  .pulse-live {
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+  
+  @keyframes pulse-glow {
+    0%, 100% {
+      opacity: 1;
+      box-shadow: 0 0 0 0 var(--glow-primary);
+    }
+    50% {
+      opacity: 0.8;
+      box-shadow: 0 0 20px 4px var(--glow-primary);
+    }
+  }
+  
+  /* Subtle breathing animation */
+  .breathe {
+    animation: breathe 4s ease-in-out infinite;
+  }
+  
+  @keyframes breathe {
+    0%, 100% {
+      opacity: 0.6;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
+  
+  /* Line trace animation */
+  .line-trace {
+    stroke-dasharray: 100;
+    stroke-dashoffset: 100;
+    animation: trace 1.5s ease forwards;
+  }
+  
+  @keyframes trace {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+  
+  /* Gradient text for headings */
+  .text-gradient {
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  /* Subtle hover glow */
+  .hover-glow {
+    transition: box-shadow 0.3s ease, transform 0.2s ease;
+  }
+  
+  .hover-glow:hover {
+    box-shadow: var(--shadow-glow-sm);
+    transform: translateY(-1px);
+  }
+  
+  /* Active state indicator */
+  .active-indicator {
+    position: relative;
+  }
+  
+  .active-indicator::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 60%;
+    background: var(--primary);
+    border-radius: 0 2px 2px 0;
+    box-shadow: var(--shadow-glow-sm);
+  }
 }
+
