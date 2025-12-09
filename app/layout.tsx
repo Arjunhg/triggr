@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Playfair_Display, Cormorant_Garamond } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next"
 import "./globals.css";
 
 
@@ -31,6 +32,7 @@ export default function RootLayout({
           className={`${playfair.variable} ${cormorant.variable} antialiased font-playfair`}
         >
               {children}
+              <Analytics/>
         </body>
       </html>
   );
