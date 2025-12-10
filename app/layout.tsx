@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Playfair_Display, Cormorant_Garamond } from "next/font/google";
-import { Analytics } from "@vercel/analytics/next"
+import { Analytics } from "@vercel/analytics/next";
+import { ConvexClientProvider } from "./ConvexClientProvider";
 import "./globals.css";
 
 
@@ -31,7 +32,9 @@ export default function RootLayout({
         <body
           className={`${playfair.variable} ${cormorant.variable} antialiased font-playfair`}
         >
-              {children}
+              <ConvexClientProvider>
+                {children}
+              </ConvexClientProvider>
               <Analytics/>
         </body>
       </html>
