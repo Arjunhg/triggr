@@ -22,6 +22,14 @@ export const metadata: Metadata = {
   description: "Form workflows seamlessly.",
 };
 
+/**
+ * Wraps the application UI in the root HTML structure with global fonts, the Convex client provider, and analytics.
+ *
+ * Renders the top-level <html> and <body>, applies configured font CSS variables and classes, places `children` inside the ConvexClientProvider, and includes the Analytics component.
+ *
+ * @param children - The application content to render inside the root layout and Convex client provider.
+ * @returns The root JSX element containing the HTML and body with providers and analytics.
+ */
 export default function RootLayout({
   children,
 }: Readonly<{
