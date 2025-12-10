@@ -83,7 +83,7 @@ export default function WorkflowOverview() {
                         </div>
                         
                         <motion.div variants={containerVariants} className="space-y-3">
-                            {recentWorkflows.map((workflow, index) => (
+                            {recentWorkflows.map((workflow) => (
                                 <motion.div
                                     key={workflow.name}
                                     variants={itemVariants}
