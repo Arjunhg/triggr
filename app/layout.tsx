@@ -3,6 +3,15 @@ import { Playfair_Display, Cormorant_Garamond } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { ConvexClientProvider } from "./ConvexClientProvider";
 import "./globals.css";
+import {
+  ClerkProvider,
+  SignInButton,
+  SignUpButton,
+  SignedIn,
+  SignedOut,
+  UserButton,
+} from '@clerk/nextjs'
+import Provider from "./provider";
 
 
 const playfair = Playfair_Display({
@@ -28,15 +37,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-      <html lang="en">
-        <body
-          className={`${playfair.variable} ${cormorant.variable} antialiased font-playfair`}
-        >
-              <ConvexClientProvider>
+      <ClerkProvider>
+        <html lang="en">
+          <body
+            className={`${playfair.variable} ${cormorant.variable} antialiased font-playfair`}
+          >
+            <ConvexClientProvider>
+              <Provider>
                 {children}
-              </ConvexClientProvider>
-              <Analytics/>
-        </body>
-      </html>
+              </Provider>
+            </ConvexClientProvider>
+          </body>
+        </html>
+      </ClerkProvider>
   );
 }
