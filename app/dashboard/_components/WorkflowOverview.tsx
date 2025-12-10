@@ -39,7 +39,7 @@ export default function WorkflowOverview() {
             className="space-y-8"
         >
             {/* Stats Grid */}
-            <motion.div variants={itemVariants} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <motion.div variants={containerVariants} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {stats.map((stat, index) => (
                     <motion.div
                         key={stat.label}
@@ -82,13 +82,11 @@ export default function WorkflowOverview() {
                         </Button>
                         </div>
                         
-                        <div className="space-y-3">
+                        <motion.div variants={containerVariants} className="space-y-3">
                             {recentWorkflows.map((workflow, index) => (
                                 <motion.div
                                     key={workflow.name}
-                                    initial={{ opacity: 0, x: -20 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    transition={{ delay: 0.3 + index * 0.1 }}
+                                    variants={itemVariants}
                                     whileHover={{ x: 4 }}
                                     className="flex items-center justify-between p-4 rounded-lg bg-muted/30 hover:bg-muted/50 transition-colors group cursor-pointer"
                                 >
@@ -120,7 +118,7 @@ export default function WorkflowOverview() {
                                 </div>
                                 </motion.div>
                             ))}
-                        </div>
+                        </motion.div>
                     </div>
                 </motion.div>
 
