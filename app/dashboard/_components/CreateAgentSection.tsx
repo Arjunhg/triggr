@@ -55,15 +55,16 @@ export default function CreateAgentSection() {
         try{
             const agentId = uuidv4();
 
-            const result = await CreateAgentMutation({
+            await CreateAgentMutation({
                 name: agentName,
                 agentId: agentId,
                 userId: userDetails._id
             });
 
             toast.success("Agent created successfully!");
+            setAgentName('');
             setOpenDialog(false);
-            router.push(`/dashboard/agent/${agentId}`);
+            router.push(`/agent-builder/${agentId}`);
         }catch(err){
             console.error("Error creating agent:", err);
             toast.error("Failed to create agent. Please try again.");
@@ -113,7 +114,11 @@ export default function CreateAgentSection() {
                             <DialogHeader>
                                 <DialogTitle>Enter Your Agent Name</DialogTitle>
                                 <DialogDescription>
-                                    <Input placeholder="Agent Name" onChange={(event) => setAgentName(event.target.value)}/>
+                                    <Input 
+                                        placeholder="Agent Name" 
+                                        value={agentName}
+                                        onChange={(event) => setAgentName(event.target.value)}
+                                    />
                                 </DialogDescription>
                             </DialogHeader>
                             <DialogFooter>

@@ -9,6 +9,17 @@ export const CreateAgent = mutation({
         userId: v.id('UserTable'),
     },
     handler: async(ctx, args) => {
+        // First check if an agent with the same agentId already exists
+        const existingAgent = await ctx.db
+            .query('AgentTable')
+            .withIndex('byAgentId', (q) => q.eq('agentId', args.agentId))
+            .first();
+
+        if(existingAgent){
+            throw new Error("Agent with the same agentId already exists.");
+        }
+
+        // If not, create a new agent
         const result = await ctx.db.insert('AgentTable', {
             name: args.name,
             agentId: args.agentId,
@@ -24,7 +35,11 @@ export const GetUserAgents = query({
         userId: v.id('UserTable')
     },
     handler: async(ctx, args) => {
-        const result = await ctx.db.query('AgentTable').filter(q => q.eq(q.field('userId'), args.userId)).order('desc').collect();
+        const result = await ctx.db
+            .query('AgentTable')
+            .withIndex('byUser', (q) => q.eq('userId', args.userId))
+            .order('desc')
+            .collect();
         return result;
     }
 })

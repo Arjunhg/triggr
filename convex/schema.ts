@@ -18,5 +18,7 @@ export default defineSchema({
     published: v.boolean(),
     userId: v.id("UserTable"),
     agentToolConfig: v.optional(v.any())
-  }).index("byUser", ["userId"]),
+  })
+  .index("byUser", ["userId"])
+  .index("byAgentId", ["agentId"]),
 })
