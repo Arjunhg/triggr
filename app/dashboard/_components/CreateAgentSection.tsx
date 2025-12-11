@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { 
+    Loader2Icon,
   Plus, 
   Sparkles,
 } from "lucide-react";
@@ -19,12 +20,58 @@ import { Button } from "@/components/ui/button";
 import { containerVariants, itemVariants } from "@/lib/variants";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
-
-
+import { useMutation } from "convex/react";
+import { api } from "@/convex/_generated/api";
+import { v4 as uuidv4 } from 'uuid';
+import { useUserDetail } from "@/context/UserDetailsContext";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 export default function CreateAgentSection() {
 
     const [openDialog, setOpenDialog] =  useState(false);
+
+    const CreateAgentMutation = useMutation(api.agent.CreateAgent);
+
+    const [agentName, setAgentName] = useState<string>('');
+    const [loader, setLoader] = useState<boolean>(false);
+    const { userDetails } = useUserDetail();
+    const router = useRouter();
+
+    const handleCreateAgent = async () => {
+
+        if(!userDetails?._id){
+            toast.error("User not found. Please login again.");
+            return;
+        }
+
+        const trimmedName = agentName.trim();
+        if(trimmedName.length < 3 || trimmedName.length > 25){
+            toast.error("Agent name must be between 3 and 25 characters.");
+            return;
+        }
+        setLoader(true);
+
+        try{
+            const agentId = uuidv4();
+
+            const result = await CreateAgentMutation({
+                name: agentName,
+                agentId: agentId,
+                userId: userDetails._id
+            });
+
+            toast.success("Agent created successfully!");
+            setOpenDialog(false);
+            router.push(`/dashboard/agent/${agentId}`);
+        }catch(err){
+            console.error("Error creating agent:", err);
+            toast.error("Failed to create agent. Please try again.");
+        }finally{
+            setLoader(false);
+        }
+    }
+
 
     return(
         <motion.div
@@ -66,14 +113,23 @@ export default function CreateAgentSection() {
                             <DialogHeader>
                                 <DialogTitle>Enter Your Agent Name</DialogTitle>
                                 <DialogDescription>
-                                    <Input placeholder="Agent Name"/>
+                                    <Input placeholder="Agent Name" onChange={(event) => setAgentName(event.target.value)}/>
                                 </DialogDescription>
                             </DialogHeader>
                             <DialogFooter>
-                                <DialogClose>
+                                <DialogClose disabled={loader}>
                                     <Button variant={'ghost'} className="cursor-pointer">Cancel</Button>
                                 </DialogClose>
-                                <Button variant={'default'} className="cursor-pointer">Create</Button>
+                                <Button variant={'default'} onClick={handleCreateAgent} disabled={loader || !agentName.trim()} className="cursor-pointer">
+                                    {loader ? (
+                                        <>
+                                            <Loader2Icon className="animate-spin mr-2"/>
+                                            Creating...
+                                        </>
+                                    ) : (
+                                        "Create Agent"
+                                    )}
+                                </Button>
                             </DialogFooter>
                         </DialogContent>    
                     </Dialog>

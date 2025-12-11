@@ -3,15 +3,9 @@ import { Playfair_Display, Cormorant_Garamond } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { ConvexClientProvider } from "./ConvexClientProvider";
 import "./globals.css";
-import {
-  ClerkProvider,
-  SignInButton,
-  SignUpButton,
-  SignedIn,
-  SignedOut,
-  UserButton,
-} from '@clerk/nextjs'
+import { ClerkProvider } from '@clerk/nextjs'
 import Provider from "./provider";
+import { Toaster } from "react-hot-toast"; 
 
 
 const playfair = Playfair_Display({
@@ -42,9 +36,11 @@ export default function RootLayout({
           <body
             className={`${playfair.variable} ${cormorant.variable} antialiased font-playfair`}
           >
+            <Toaster position="top-center"/>
             <ConvexClientProvider>
               <Provider>
                 {children}
+                <Analytics/>
               </Provider>
             </ConvexClientProvider>
           </body>
