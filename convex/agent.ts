@@ -43,3 +43,42 @@ export const GetUserAgents = query({
         return result;
     }
 })
+
+export const GetAgentById = query({
+    args: {
+        agentId: v.string()
+    },
+    handler: async(ctx, args) => {
+        const result = await ctx.db
+            .query('AgentTable')
+            .withIndex('byAgentId', (q) => q.eq('agentId', args.agentId))
+            .first();
+
+        return result;
+    }
+})
+
+export const UpdateAgentWorkflow = mutation({
+    args: {
+        agentId: v.string(),
+        nodes: v.any(),
+        edges: v.any()
+    },
+    handler: async(ctx, args) => {
+        const existingAgent = await ctx.db
+            .query('AgentTable')
+            .withIndex('byAgentId', (q) => q.eq('agentId', args.agentId))
+            .first();
+
+        if(!existingAgent){
+            throw new Error("Agent not found.");
+        }
+
+        const updatedAgent = await ctx.db.patch(existingAgent._id, {
+            nodes: args.nodes,
+            edges: args.edges
+        });
+
+        return updatedAgent;
+    }
+})
