@@ -1,5 +1,7 @@
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
+import { EdgeSchema, NodeSchema } from "./schema";
+import { getUserById } from "./user";
 
 
 export const CreateAgent = mutation({
@@ -41,5 +43,52 @@ export const GetUserAgents = query({
             .order('desc')
             .collect();
         return result;
+    }
+})
+
+export const GetAgentById = query({
+    args: {
+        agentId: v.string()
+    },
+    handler: async(ctx, args) => {
+        const result = await ctx.db
+            .query('AgentTable')
+            .withIndex('byAgentId', (q) => q.eq('agentId', args.agentId))
+            .first();
+
+        return result;
+    }
+})
+
+export const UpdateAgentWorkflow = mutation({
+    args: {
+        agentId: v.string(),
+        nodes: v.optional(v.array(NodeSchema)),
+        edges: v.optional(v.array(EdgeSchema)),
+        userId: v.id('UserTable')
+    },
+    handler: async(ctx, args) => {
+        // ensure caller calls own agent
+        const user = await ctx.db.get(args.userId);
+        if (!user) throw new Error("User not found");
+
+        const existingAgent = await ctx.db
+            .query('AgentTable')
+            .withIndex('byAgentId', (q) => q.eq('agentId', args.agentId))
+            .first();
+
+        if(!existingAgent){
+            throw new Error("Agent not found.");
+        }
+        if(existingAgent.userId !== args.userId){
+            throw new Error("You are not authorized to update this agent.");
+        }
+
+        const updatedAgent = await ctx.db.patch(existingAgent._id, {
+            nodes: args.nodes,
+            edges: args.edges
+        });
+
+        return updatedAgent;
     }
 })
