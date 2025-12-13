@@ -11,7 +11,7 @@ const PositionSchema = v.object({
   y: v.number(),
 });
 
-const NodeSchema = v.object({
+export const NodeSchema = v.object({
   id: v.string(),
   position: PositionSchema,
   data: v.any(),
@@ -21,7 +21,7 @@ const NodeSchema = v.object({
   selected: v.optional(v.boolean()),
 })
 
-const EdgeSchema = v.object({
+export const EdgeSchema = v.object({
   id: v.string(),
   source: v.string(),
   target: v.string(),

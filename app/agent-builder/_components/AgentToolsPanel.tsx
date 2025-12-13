@@ -64,12 +64,13 @@ const AgentTools = [
 ];
 
 export default function AgentToolsPanel() {
-    const { setAddedNodes } = useAgentContext();
+    const { setAddedNodes, addedNodes} = useAgentContext();
 
     const onAgentToolClick = (tool: AgentToolType) => {
+        const nodeCount = addedNodes?.length ?? 0;
         const newNode = {
             id: `${tool.id}-${Date.now()}`,
-            position: { x: 250, y: 150 },
+            position: { x: 250 + (nodeCount * 30), y: 150 + (nodeCount * 30) },
             data: { 
                 label: tool.name, 
                 bgColor: tool.gradient, 

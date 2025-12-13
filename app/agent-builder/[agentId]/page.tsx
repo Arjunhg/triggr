@@ -18,6 +18,7 @@ import { useParams } from "next/navigation";
 import toast from "react-hot-toast";
 import { AgentDetails, EdgeType, NodeType } from "@/lib/types";
 import { Spinner } from "@/components/ui/spinner";
+import { useUserDetail } from "@/context/UserDetailsContext";
 
 // const initialNodes: Node[] = [
 //   { id: 'n1', position: { x: 0, y: 0 }, data: { label: 'Node 1' }, type: 'StartNode' },
@@ -57,6 +58,7 @@ export default function AgentBuilder(){
     const [flowHydrated, setFlowHydrated] = useState(false);
 
     const { addedNodes, setAddedNodes, addedEdges, setAddedEdges } = useAgentContext();
+    const { userDetails } = useUserDetail();
 
     // Database Persistence Logic Here
     const [agentDetails, setAgentDetails] = useState<AgentDetails>();
@@ -65,16 +67,6 @@ export default function AgentBuilder(){
     const convex = useConvex();
 
     const updateAgentDetail = useMutation(api.agent.UpdateAgentWorkflow);
-
-    useEffect(() => {
-        if(!agentId){
-            setIsLoading(false);
-            setFlowHydrated(false);
-            return;
-        }
-        setFlowHydrated(false);
-        getAgentDetails();
-    }, [agentId])
 
     const getAgentDetails = async() => {
         if(!agentId || typeof agentId !== 'string'){
@@ -102,16 +94,30 @@ export default function AgentBuilder(){
             setIsLoading(false);
         }
     }
+    const getUserId = async() => {
+        try{
+            const result = await convex.query(api.user.getUserById, {
+                userId: userDetails?._id!!
+            });
+            return result;
+        }catch(error){
+            console.error("Error fetching user details:", error);
+            toast.error("Error fetching user details");
+        }
+    }
+
     const handleSaveWorkflow = async () => {
         if(!agentId || typeof agentId !== 'string'){
             toast.error("Cannot save workflow without a valid agent");
             return;
         }
+        const userId = await getUserId();
         try {
             await updateAgentDetail({
                 agentId: agentId as string,
                 nodes: addedNodes,
-                edges: addedEdges
+                edges: addedEdges,
+                userId: userId?._id!!
             });
             toast.success("Workflow saved successfully");
         } catch (error) {
@@ -129,6 +135,16 @@ export default function AgentBuilder(){
         setAddedNodes(safeNodes);
         setAddedEdges(safeEdges);
     }, [setAddedNodes, setAddedEdges]);
+
+    useEffect(() => {
+        if(!agentId){
+            setIsLoading(false);
+            setFlowHydrated(false);
+            return;
+        }
+        setFlowHydrated(false);
+        getAgentDetails();
+    }, [agentId])
 
     useEffect(() => {
         if (isLoading || flowHydrated) return;
