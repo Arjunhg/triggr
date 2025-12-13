@@ -1,7 +1,7 @@
 'use client';
 import Header from "../_components/Header";
 import '@xyflow/react/dist/style.css';
-import { ReactFlow, applyNodeChanges, applyEdgeChanges, addEdge, Background, MiniMap, Controls, OnNodesChange, OnEdgesChange, OnConnect, BackgroundVariant, Panel, OnNodeDrag, Node, Edge } from '@xyflow/react';
+import { ReactFlow, applyNodeChanges, applyEdgeChanges, addEdge, Background, MiniMap, Controls, OnNodesChange, OnEdgesChange, OnConnect, BackgroundVariant, Panel, OnNodeDrag, Node, Edge, OnSelectionChangeParams } from '@xyflow/react';
 import { useCallback, useEffect, useMemo, useState } from "react";
 import StartNode from "../_customNodes/StartNode";
 import AgentNode from "../_customNodes/AgentNode";
@@ -19,6 +19,7 @@ import toast from "react-hot-toast";
 import { AgentDetails, EdgeType, NodeType } from "@/lib/types";
 import { Spinner } from "@/components/ui/spinner";
 import { useUserDetail } from "@/context/UserDetailsContext";
+import PanelSetting from "../_components/PanelSetting";
 
 // const initialNodes: Node[] = [
 //   { id: 'n1', position: { x: 0, y: 0 }, data: { label: 'Node 1' }, type: 'StartNode' },
@@ -57,7 +58,7 @@ export default function AgentBuilder(){
     const [edges, setEdges] = useState<EdgeType[]>([]);
     const [flowHydrated, setFlowHydrated] = useState(false);
 
-    const { addedNodes, setAddedNodes, addedEdges, setAddedEdges } = useAgentContext();
+    const { addedNodes, setAddedNodes, addedEdges, setAddedEdges, setSelectedNode } = useAgentContext();
     const { userDetails } = useUserDetail();
 
     // Database Persistence Logic Here
@@ -243,6 +244,13 @@ export default function AgentBuilder(){
         setIsSaving(false);
     };
 
+    const onNodeSelect = useCallback(
+        ({ nodes }: OnSelectionChangeParams) => {
+            setSelectedNode(nodes[0] || null);
+        },
+        [setSelectedNode]
+    )
+
 
     return(
         <div className="flex flex-col h-screen bg-background overflow-hidden">
@@ -275,6 +283,7 @@ export default function AgentBuilder(){
                     nodeTypes={nodeTypes}
                     className="bg-background"
                     proOptions={{ hideAttribution: true }}
+                    onSelectionChange={onNodeSelect}
                     defaultEdgeOptions={{
                         type: 'smoothstep',
                         animated: true,
@@ -300,7 +309,8 @@ export default function AgentBuilder(){
                     </Panel>
                     <Panel position="top-right" className="!m-4">
                         <div className="bg-background/80 backdrop-blur-xl border border-border/50 rounded-2xl p-4 shadow-xl">
-                            <h3 className="font-semibold text-foreground text-sm mb-2">Node Settings</h3>
+                            <h3 className="font-semibold text-foreground text-sm mb-2"><PanelSetting/></h3>
+                            {/* <PanelSetting/> */}
                             <p className="text-xs text-muted-foreground">Select a node to configure</p>
                         </div>
                     </Panel>
