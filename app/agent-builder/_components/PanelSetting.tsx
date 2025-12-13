@@ -9,26 +9,39 @@ import ApiAgentSettings from '../_nodeSettings/ApiSettings'
 import IfElseSettings from '../_nodeSettings/IfElseSettings'
 import { useAgentContext } from '@/context/AgentContext'
 import { motion, AnimatePresence } from 'framer-motion'
-import { containerVariants, itemVariants } from '@/lib/variants'
+import { itemVariants } from '@/lib/variants'
 import { Settings2, PanelRightClose, PanelRight } from 'lucide-react'
+import { 
+  NodeType, 
+  NodeSettings,
+  AgentNode, 
+  EndNode, 
+  IfElseNode, 
+  WhileNode, 
+  UserApprovalNode, 
+  ApiNode 
+} from '@/lib/types'
 
 export default function PanelSetting() {
   const { selectedNode, setAddedNodes } = useAgentContext();
   const [isOpen, setIsOpen] = useState(true);
 
-  const onUpdateNodeData = (formData: any) => {
+  const onUpdateNodeData = (formData: NodeSettings) => {
     if (!selectedNode) return
-    const updatedNode = {
+    
+    const newLabel = 'name' in formData ? formData.name : selectedNode.data?.label;
+    
+    const updatedNode: NodeType = {
       ...selectedNode,
       data: {
         ...selectedNode.data,
-        label: formData.name ?? selectedNode.data?.label,
+        label: newLabel ?? selectedNode.data?.label,
         settings: formData,
       },
     }
 
-    setAddedNodes((prevNodes: any) =>
-      prevNodes.map((node: any) =>
+    setAddedNodes((prevNodes: NodeType[]) =>
+      prevNodes.map((node: NodeType) =>
         node.id === selectedNode.id ? updatedNode : node
       )
     )
@@ -80,7 +93,7 @@ export default function PanelSetting() {
     case 'AgentNode':
       content = (
         <AgentSettings
-          selectedNode={selectedNode}
+          selectedNode={selectedNode as AgentNode}
           updateFormData={onUpdateNodeData}
         />
       )
@@ -88,7 +101,7 @@ export default function PanelSetting() {
     case 'EndNode':
       content = (
         <EndSettings
-          selectedNode={selectedNode}
+          selectedNode={selectedNode as EndNode}
           updateFormData={onUpdateNodeData}
         />
       )
@@ -96,7 +109,7 @@ export default function PanelSetting() {
     case 'IfElseNode':
       content = (
         <IfElseSettings
-          selectedNode={selectedNode}
+          selectedNode={selectedNode as IfElseNode}
           updateFormData={onUpdateNodeData}
         />
       )
@@ -104,7 +117,7 @@ export default function PanelSetting() {
     case 'WhileNode':
       content = (
         <WhileSettings
-          selectedNode={selectedNode}
+          selectedNode={selectedNode as WhileNode}
           updateFormData={onUpdateNodeData}
         />
       )
@@ -112,7 +125,7 @@ export default function PanelSetting() {
     case 'UserApprovalNode':
       content = (
         <UserApproval
-          selectedNode={selectedNode}
+          selectedNode={selectedNode as UserApprovalNode}
           updateFormData={onUpdateNodeData}
         />
       )
@@ -120,7 +133,7 @@ export default function PanelSetting() {
     case 'ApiNode':
       content = (
         <ApiAgentSettings
-          selectedNode={selectedNode}
+          selectedNode={selectedNode as ApiNode}
           updateFormData={onUpdateNodeData}
         />
       )

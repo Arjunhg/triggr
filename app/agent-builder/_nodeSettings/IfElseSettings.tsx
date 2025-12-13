@@ -8,15 +8,11 @@ import { toast } from 'react-hot-toast';
 import { motion } from 'framer-motion'
 import { containerVariants, itemVariants } from '@/lib/variants'
 import { GitBranch, Code2, Save, Info } from 'lucide-react'
-
-type IfElseSettingsProps = {
-  selectedNode: any
-  updateFormData: (data: any) => void
-}
+import { IfElseSettingsProps, IfElseNodeSettings } from '@/lib/types'
 
 export default function IfElseSettings({ selectedNode, updateFormData }: IfElseSettingsProps) {
 
-  const [formData, setFormData] = useState({ ifCondition: '' })
+  const [formData, setFormData] = useState<IfElseNodeSettings>({ ifCondition: '' })
 
   useEffect(() => {
     if (selectedNode?.data?.settings) {

@@ -308,11 +308,7 @@ export default function AgentBuilder(){
                         <AgentToolsPanel/>
                     </Panel>
                     <Panel position="top-right" className="!m-4">
-                        <div className="bg-background/80 backdrop-blur-xl border border-border/50 rounded-2xl p-4 shadow-xl">
-                            <h3 className="font-semibold text-foreground text-sm mb-2"><PanelSetting/></h3>
-                            {/* <PanelSetting/> */}
-                            <p className="text-xs text-muted-foreground">Select a node to configure</p>
-                        </div>
+                        <PanelSetting/>
                     </Panel>
                 </ReactFlow>
             )}

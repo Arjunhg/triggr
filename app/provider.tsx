@@ -38,7 +38,7 @@ export default function Provider({
 
     const [addedEdges, setAddedEdges] = useState<EdgeType[]>([]);
 
-    const [selectedNode,setSelectedNode]=useState<any>()
+    const [selectedNode,setSelectedNode]=useState<NodeType | null>(null)
     
     return (
         <UserDetailContext.Provider value={{userDetails, setUserDetails}}>

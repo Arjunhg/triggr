@@ -2,7 +2,7 @@ import { AgentContextType } from "@/lib/types";
 import { createContext, useContext } from "react";
 
 
-export const AgentContext = createContext<any | undefined>(undefined);
+export const AgentContext = createContext<AgentContextType | undefined>(undefined);
 
 export function useAgentContext() {
 	const context = useContext(AgentContext);

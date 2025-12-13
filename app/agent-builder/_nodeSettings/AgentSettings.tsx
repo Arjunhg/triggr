@@ -12,15 +12,11 @@ import { toast } from 'react-hot-toast'
 import { motion } from 'framer-motion'
 import { containerVariants, itemVariants } from '@/lib/variants'
 import { Bot, Brain, History, MessageSquare, Save, Sparkles } from 'lucide-react'
-
-type AgentSettingsProps = {
-  selectedNode: any
-  updateFormData: (data: any) => void
-}
+import { AgentSettingsProps, AgentNodeSettings } from '@/lib/types'
 
 export default function AgentSettings({ selectedNode, updateFormData }: AgentSettingsProps) {
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<AgentNodeSettings>({
     name: '',
     instruction: '',
     includeHistory: true,
@@ -38,7 +34,7 @@ export default function AgentSettings({ selectedNode, updateFormData }: AgentSet
     }
   }, [selectedNode])
 
-  const handleChange = (key: string, value: any) => {
+  const handleChange = <K extends keyof AgentNodeSettings>(key: K, value: AgentNodeSettings[K]) => {
     setFormData((prev) => ({
       ...prev,
       [key]: value
@@ -149,7 +145,7 @@ export default function AgentSettings({ selectedNode, updateFormData }: AgentSet
         <Label className="text-sm font-medium">Output Format</Label>
         <Tabs
           value={formData.output}
-          onValueChange={(value) => handleChange('output', value)}
+          onValueChange={(value) => handleChange('output', value as AgentNodeSettings['output'])}
           className="w-full"
         >
           <TabsList className="w-full bg-muted/50 p-1">

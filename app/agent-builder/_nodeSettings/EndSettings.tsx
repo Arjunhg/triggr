@@ -8,14 +8,10 @@ import { motion } from 'framer-motion'
 import { containerVariants, itemVariants } from '@/lib/variants'
 import { Flag, FileJson, Save } from 'lucide-react'
 import toast from 'react-hot-toast';
-
-type EndSettingsProps = {
-  selectedNode: any
-  updateFormData: (data: any) => void
-}
+import { EndSettingsProps, EndNodeSettings } from '@/lib/types'
 
 export default function EndSettings({ selectedNode, updateFormData }: EndSettingsProps) {
-  const [formData, setFormData] = useState({ schema: '' })
+  const [formData, setFormData] = useState<EndNodeSettings>({ schema: '' })
 
   useEffect(() => {
     if (selectedNode?.data?.settings) {

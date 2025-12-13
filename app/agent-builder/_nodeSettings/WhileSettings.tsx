@@ -8,15 +8,11 @@ import { toast } from 'react-hot-toast';
 import { motion } from 'framer-motion'
 import { containerVariants, itemVariants } from '@/lib/variants'
 import { RefreshCw, Code2, Save, Info } from 'lucide-react'
-
-type WhileSettingsProps = {
-  selectedNode: any
-  updateFormData: (data: any) => void
-}
+import { WhileSettingsProps, WhileNodeSettings } from '@/lib/types'
 
 export default function WhileSettings({ selectedNode, updateFormData }: WhileSettingsProps) {
 
-  const [formData, setFormData] = useState({ whileCondition: '' })
+  const [formData, setFormData] = useState<WhileNodeSettings>({ whileCondition: '' })
 
   useEffect(() => {
     if (selectedNode?.data?.settings) {

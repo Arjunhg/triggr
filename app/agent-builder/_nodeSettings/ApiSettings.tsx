@@ -10,15 +10,11 @@ import { toast } from 'react-hot-toast'
 import { motion } from 'framer-motion'
 import { containerVariants, itemVariants } from '@/lib/variants'
 import { Globe, Sparkles, Link2, Send, FileJson, Braces, Save } from 'lucide-react'
+import { ApiSettingsProps, ApiNodeSettings } from '@/lib/types';
 
-type ApiAgentSettingsProps = {
-  selectedNode: any
-  updateFormData: (data: any) => void
-}
+const httpMethods: ApiNodeSettings['method'][] = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE']
 
-const httpMethods = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE']
-
-const methodColors: Record<string, string> = {
+const methodColors: Record<ApiNodeSettings['method'], string> = {
   GET: 'text-green-500',
   POST: 'text-blue-500',
   PUT: 'text-amber-500',
@@ -26,8 +22,8 @@ const methodColors: Record<string, string> = {
   DELETE: 'text-red-500',
 }
 
-const ApiAgentSettings: React.FC<ApiAgentSettingsProps> = ({ selectedNode, updateFormData }) => {
-  const [formData, setFormData] = useState({
+const ApiAgentSettings: React.FC<ApiSettingsProps> = ({ selectedNode, updateFormData }) => {
+  const [formData, setFormData] = useState<ApiNodeSettings>({
     name: '',
     endpoint: '',
     method: 'GET',
@@ -44,7 +40,7 @@ const ApiAgentSettings: React.FC<ApiAgentSettingsProps> = ({ selectedNode, updat
     }
   }, [selectedNode])
 
-  const handleChange = (key: string, value: string) => {
+  const handleChange = <K extends keyof ApiNodeSettings>(key: K, value: ApiNodeSettings[K]) => {
     setFormData((prev) => ({
       ...prev,
       [key]: value,
@@ -120,7 +116,7 @@ const ApiAgentSettings: React.FC<ApiAgentSettingsProps> = ({ selectedNode, updat
         </Label>
         <Select
           value={formData.method}
-          onValueChange={(value) => handleChange('method', value)}
+          onValueChange={(value) => handleChange('method', value as ApiNodeSettings['method'])}
         >
           <SelectTrigger className="bg-muted/50 border-border/50 focus:border-cyan-500/50">
             <SelectValue>

@@ -9,15 +9,11 @@ import { toast } from 'react-hot-toast'
 import { motion } from 'framer-motion'
 import { containerVariants, itemVariants } from '@/lib/variants'
 import { UserCheck, Sparkles, MessageSquare, Save, Info } from 'lucide-react'
+import { UserApprovalSettingsProps, UserApprovalNodeSettings } from '@/lib/types'
 
-type UserApprovalProps = {
-  selectedNode: any
-  updateFormData: (data: any) => void
-}
+export default function UserApproval({ selectedNode, updateFormData }: UserApprovalSettingsProps) {
 
-export default function UserApproval({ selectedNode, updateFormData }: UserApprovalProps) {
-
-  const [formData, setFormData] = useState({ name: '', message: '' })
+  const [formData, setFormData] = useState<UserApprovalNodeSettings>({ name: '', message: '' })
 
   useEffect(() => {
     if (selectedNode?.data?.settings) {
@@ -25,7 +21,7 @@ export default function UserApproval({ selectedNode, updateFormData }: UserAppro
     }
   }, [selectedNode])
 
-  const handleChange = (key: string, value: any) => {
+  const handleChange = <K extends keyof UserApprovalNodeSettings>(key: K, value: UserApprovalNodeSettings[K]) => {
     setFormData((prev) => ({
       ...prev,
       [key]: value
