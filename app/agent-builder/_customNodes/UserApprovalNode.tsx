@@ -38,6 +38,12 @@ export default function UserApprovalNode({ data }: NodeProps<LabelNode>) {
                         </div>
                         <p className="text-xs text-muted-foreground">Human Review</p>
                     </div>
+
+                    {/* Branch labels */}
+                    <div className="flex flex-col gap-2 ml-4 text-xs">
+                        <span className="text-emerald-500 font-medium">Approve ●</span>
+                        <span className="text-rose-500 font-medium">Reject ●</span>
+                    </div>
                 </div>
                 
                 {/* Target Handle (Left) */}
@@ -51,7 +57,16 @@ export default function UserApprovalNode({ data }: NodeProps<LabelNode>) {
                 <Handle 
                     type="source" 
                     position={Position.Right}
-                    className="!w-3 !h-3 !bg-violet-500 !border-2 !border-background"
+                    id={'approve'}
+                    style={{ top: "35%" }}
+                    className="!w-3 !h-3 !bg-emerald-500 !border-2 !border-background"
+                />
+                <Handle
+                    type="source"
+                    position={Position.Right}
+                    id={'reject'}
+                    style={{ top: "65%" }}
+                    className="!w-3 !h-3 !bg-rose-500 !border-2 !border-background"
                 />
             </div>
         </motion.div>

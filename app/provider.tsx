@@ -37,10 +37,12 @@ export default function Provider({
     const [addedNodes, setAddedNodes] = useState<NodeType[]>([]);
 
     const [addedEdges, setAddedEdges] = useState<EdgeType[]>([]);
+
+    const [selectedNode,setSelectedNode]=useState<NodeType | null>(null)
     
     return (
         <UserDetailContext.Provider value={{userDetails, setUserDetails}}>
-            <AgentContext.Provider value={{addedNodes, setAddedNodes, addedEdges, setAddedEdges}}>
+            <AgentContext.Provider value={{addedNodes, setAddedNodes, addedEdges, setAddedEdges, selectedNode, setSelectedNode}}>
                 <div>
                     {children}
                 </div>

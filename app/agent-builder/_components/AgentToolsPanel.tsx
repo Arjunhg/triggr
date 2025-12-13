@@ -2,9 +2,10 @@
 
 import { useAgentContext } from "@/context/AgentContext";
 import { AgentToolType, NodeType } from "@/lib/types";
-import { Bot, CircleOff, GitBranch, RefreshCw, ShieldCheck, Webhook, Wand2 } from "lucide-react";
-import { motion } from "framer-motion";
-import { containerVariants, itemVariants } from "@/lib/variants";
+import { Bot, CircleOff, GitBranch, RefreshCw, ShieldCheck, Webhook, Wand2, PanelLeftClose, PanelLeft } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { itemVariants } from "@/lib/variants";
+import { useState } from "react";
 
 const AgentTools = [
   {
@@ -65,6 +66,7 @@ const AgentTools = [
 
 export default function AgentToolsPanel() {
     const { setAddedNodes, addedNodes} = useAgentContext();
+    const [isOpen, setIsOpen] = useState(true);
 
     const onAgentToolClick = (tool: AgentToolType) => {
         const nodeCount = addedNodes?.length ?? 0;
@@ -82,19 +84,81 @@ export default function AgentToolsPanel() {
         setAddedNodes((prevNodes: NodeType[]) => [...prevNodes, newNode]);
     };
 
+    // Panel animation: closes from bottom-right to top-left
+    const panelVariants = {
+        open: {
+            opacity: 1,
+            scale: 1,
+            x: 0,
+            y: 0,
+            transition: {
+                type: "spring" as const,
+                stiffness: 300,
+                damping: 25,
+                staggerChildren: 0.05,
+            }
+        },
+        closed: {
+            opacity: 0,
+            scale: 0.3,
+            x: -100,
+            y: -150,
+            transition: {
+                type: "spring" as const,
+                stiffness: 400,
+                damping: 30,
+            }
+        }
+    };
+
     return (
-        <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-            className="w-64 bg-background/80 backdrop-blur-xl border border-border/50 rounded-2xl shadow-xl overflow-hidden"
-        >
+        <div className="relative">
+            {/* Toggle Button - Always visible */}
+            <motion.button
+                onClick={() => setIsOpen(!isOpen)}
+                className={`
+                    absolute top-0 left-0 z-10
+                    p-2.5 rounded-xl
+                    bg-background/80 backdrop-blur-xl
+                    border border-border/50
+                    shadow-lg
+                    hover:bg-muted/50
+                    transition-colors duration-200
+                    ${isOpen ? 'opacity-70 hover:opacity-100' : ''}
+                `}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                title={isOpen ? "Close panel" : "Open panel"}
+            >
+                <motion.div
+                    animate={{ rotate: isOpen ? 0 : 180 }}
+                    transition={{ duration: 0.3 }}
+                >
+                    {isOpen ? (
+                        <PanelLeftClose className="h-4 w-4 text-primary" />
+                    ) : (
+                        <PanelLeft className="h-4 w-4 text-primary" />
+                    )}
+                </motion.div>
+            </motion.button>
+
+            {/* Panel Content */}
+            <AnimatePresence mode="wait">
+                {isOpen && (
+                    <motion.div
+                        variants={panelVariants}
+                        initial="closed"
+                        animate="open"
+                        exit="closed"
+                        className="w-64 bg-background/80 backdrop-blur-xl border border-border/50 rounded-2xl shadow-xl overflow-hidden origin-top-left"
+                        style={{ transformOrigin: 'top left' }}
+                    >
             {/* Header */}
             <motion.div 
                 variants={itemVariants}
                 className="p-4 border-b border-border/50"
             >
-                <div className="flex items-center gap-2">
+                <div className="flex items-center justify-center gap-2">
                     <div className="relative">
                         <div className="absolute inset-0 bg-primary/30 blur-md rounded-lg" />
                         <div className="relative p-2 rounded-lg bg-primary/10 border border-primary/20">
@@ -168,6 +232,9 @@ export default function AgentToolsPanel() {
                     Click a tool to add it to the canvas
                 </p>
             </motion.div>
-        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+        </div>
     );
 }
