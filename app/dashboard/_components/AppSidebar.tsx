@@ -13,10 +13,8 @@ import {
 } from "@/components/ui/sidebar"
 import Image from "next/image";
 import Link from "next/link";
-import { Database, Gem, Headphones, LayoutDashboard, User2Icon, WalletCards, Zap } from "lucide-react"
+import { Headphones, LayoutDashboard, Zap } from "lucide-react"
 import { usePathname } from "next/navigation"
-import { useContext } from "react"
-import { UserDetailContext } from "@/context/UserDetailsContext";
 import { Button } from "@/components/ui/button";
 import { cubicBezier, motion } from "framer-motion";
 import { AutomationPattern, StatusPulse } from "./AutomationBackground";
@@ -78,13 +76,10 @@ const glowVariants = {
 
 function AppSidebar() {
   const { open } = useSidebar();
-  const context = useContext(UserDetailContext);
-  const userDetails = context?.userDetails;
   const pathname = usePathname();
 
   return (
-    <Sidebar collapsible="icon" className="border-r border-sidebar-border/50 bg-sidebar/80 backdrop-blur-xl">
-      {/* Subtle background pattern */}
+    <Sidebar className="border-r border-sidebar-border/50 bg-sidebar/80 backdrop-blur-xl">
       <AutomationPattern className="opacity-30" />
       
       {/* Logo Section */}
@@ -95,7 +90,7 @@ function AppSidebar() {
           transition={{ type: "spring", stiffness: 400 }}
         >
           <div className="absolute inset-0 bg-primary/20 blur-lg rounded-full" />
-          <Image src={'/logo.svg'} alt="logo" width={36} height={36} className="relative z-10" />
+          <Image src={'/logo.png'} alt="logo" width={56} height={56} className="relative z-10" />
         </motion.div>
         {open && (
           <motion.div
@@ -109,8 +104,6 @@ function AppSidebar() {
           </motion.div>
         )}
       </div>
-
-      <SidebarHeader />
       
       <SidebarContent className="relative z-10">
         <SidebarGroup>
@@ -188,7 +181,6 @@ function AppSidebar() {
 
       <SidebarFooter className="relative z-10 p-4 mb-4">
 
-        {/* Upgrade button */}
         {open && (
           <motion.div
             initial={{ opacity: 0, y: 10 }}
