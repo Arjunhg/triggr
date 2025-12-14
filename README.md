@@ -200,7 +200,7 @@ Triggr provides 7 different node types for building complex AI workflows:
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/triggr.git
+   git clone https://github.com/Arjunhg/triggr.git
    cd triggr
    ```
 
