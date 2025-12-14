@@ -20,10 +20,21 @@ export default function AgentSettings({ selectedNode, updateFormData }: AgentSet
     name: '',
     instruction: '',
     includeHistory: true,
-    model: 'gemini-flash-1.5',
+    model: 'google/gemini-1.5-flash',
     output: 'Text',
     schema: ''
   })
+
+  // Model options with OpenRouter-compatible identifiers
+  // See: https://openrouter.ai/models for full list
+  const modelOptions = [
+    { value: 'google/gemini-2.5-flash-lite', label: 'Gemini 1.5 Flash Lite' },
+    { value: 'google/gemini-2.5-flash', label: 'Gemini 1.5 Flash' },
+    { value: 'openai/gpt-4o-mini', label: 'GPT-4o Mini' },
+    { value: 'openai/gpt-4.1-nano', label: 'GPT 4.1 Nano' },
+    { value: 'openai/gpt-4o', label: 'GPT-4o' },
+    { value: 'x-ai/grok-3-mini', label: 'xAI Grok 3 Mini' },
+  ]
 
   useEffect(() => {
     if (selectedNode?.data?.settings) {
@@ -133,9 +144,11 @@ export default function AgentSettings({ selectedNode, updateFormData }: AgentSet
             <SelectValue placeholder="Select model" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value='gemini-flash-1.5'>Gemini Flash 1.5</SelectItem>
-            <SelectItem value='gemini-pro-1.5'>Gemini Pro 1.5</SelectItem>
-            <SelectItem value='gemini-pro-2.0'>Gemini Pro 2.0</SelectItem>
+            {modelOptions.map((model) => (
+              <SelectItem key={model.value} value={model.value}>
+                {model.label}
+              </SelectItem>
+            ))}
           </SelectContent>
         </Select>
       </motion.div>
