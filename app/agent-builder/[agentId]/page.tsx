@@ -254,7 +254,13 @@ export default function AgentBuilder(){
 
     return(
         <div className="flex flex-col h-screen bg-background overflow-hidden">
-            <Header agentDetail={agentDetails} onSave={handleSave} isSaving={isSaving}/>
+            <Header 
+                agentDetail={agentDetails} 
+                onSave={handleSave} 
+                isSaving={isSaving}
+                nodes={addedNodes}
+                edges={addedEdges}
+            />
 
             <div className="flex-1 relative">
             {isGraphLoading ? (

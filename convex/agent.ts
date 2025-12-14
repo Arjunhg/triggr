@@ -1,7 +1,6 @@
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
 import { EdgeSchema, NodeSchema } from "./schema";
-import { getUserById } from "./user";
 
 
 export const CreateAgent = mutation({
@@ -90,5 +89,51 @@ export const UpdateAgentWorkflow = mutation({
         });
 
         return updatedAgent;
+    }
+})
+
+export const UpdateAgentToolConfig=mutation({
+    args:{
+        id:v.id('AgentTable'),
+        agentToolConfig:v.any()
+    },
+    handler:async(ctx,args)=>{
+        await ctx.db.patch(args.id,{
+            agentToolConfig:args.agentToolConfig
+        })
+    }
+})
+
+export const PublishAgent = mutation({
+    args: {
+        id: v.id('AgentTable'),
+        published: v.boolean()
+    },
+    handler: async(ctx, args) => {
+        const agent = await ctx.db.get(args.id);
+        if (!agent) {
+            throw new Error("Agent not found");
+        }
+
+        if(args.published && !agent.agentToolConfig){
+            throw new Error("Cannot publish agent without tool configuration. Please generate agent tool config first.");
+        }
+
+        await ctx.db.patch(args.id, {
+            published: args.published
+        });
+
+        return { success: true, published: args.published };
+    }
+})
+
+export const GetPublishedAgents=query({
+    args:{},
+    handler:async(ctx)=>{
+        const result=await ctx.db.query('AgentTable')
+            .filter(q=>q.eq(q.field('published'),true))
+            .order('desc')
+            .collect()
+        return result;
     }
 })

@@ -2,6 +2,13 @@ import { Dispatch, SetStateAction } from "react";
 import { Id } from "@/convex/_generated/dataModel";
 import { Node, Edge } from "@xyflow/react";
 import type { LucideIcon } from "lucide-react";
+import StartNode from "@/app/agent-builder/_customNodes/StartNode";
+import AgentNode from "@/app/agent-builder/_customNodes/AgentNode";
+import EndNode from "@/app/agent-builder/_customNodes/EndNode";
+import IfElseNode from "@/app/agent-builder/_customNodes/IfElseNode";
+import WhileNode from "@/app/agent-builder/_customNodes/WhileNode";
+import UserApprovalNode from "@/app/agent-builder/_customNodes/UserApprovalNode";
+import ApiNode from "@/app/agent-builder/_customNodes/ApiNode";
 
 export type UserDetails = {
   _id?: Id<"UserTable">;
@@ -115,12 +122,17 @@ export type UserApprovalNodeSettings = {
 }
 
 // API Node Settings
+export type ApiAuthType = 'none' | 'bearer' | 'query' | 'header';
+
 export type ApiNodeSettings = {
   name: string;
   endpoint: string;
   method: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
   headers: string;
   body: string;
+  authType?: ApiAuthType;
+  apiKey?: string;
+  apiKeyName?: string; // For query param or custom header name (e.g., 'key', 'api_key', 'X-API-Key')
 }
 
 // Union type for all settings
@@ -210,3 +222,13 @@ export type ApiSettingsProps = {
   selectedNode: ApiNode;
   updateFormData: (data: ApiNodeSettings) => void;
 }
+
+export const NodeTypes = {
+    StartNode: StartNode,
+    AgentNode: AgentNode,
+    EndNode: EndNode,
+    IfElseNode: IfElseNode,
+    WhileNode: WhileNode,
+    UserApprovalNode: UserApprovalNode,
+    ApiNode: ApiNode,
+};

@@ -29,24 +29,24 @@ const MenuOptions = [
   },
   {
     title: 'AI Agents',
-    url: '/ai-agents',
+    url: '/dashboard/ai-agents',
     icon: Headphones
   },
-  {
-    title: 'Data',
-    url: '/data',
-    icon: Database
-  },
-  {
-    title: 'Pricing',
-    url: '/pricing',
-    icon: WalletCards
-  },
-  {
-    title: 'Profile',
-    url: '/profile',
-    icon: User2Icon
-  }
+  // {
+  //   title: 'Data',
+  //   url: '/data',
+  //   icon: Database
+  // },
+  // {
+  //   title: 'Pricing',
+  //   url: '/pricing',
+  //   icon: WalletCards
+  // },
+  // {
+  //   title: 'Profile',
+  //   url: '/profile',
+  //   icon: User2Icon
+  // }
 ]
 
 // Animation variants
@@ -187,25 +187,6 @@ function AppSidebar() {
       </SidebarContent>
 
       <SidebarFooter className="relative z-10 p-4 mb-4">
-        {/* Credits display */}
-        <motion.div 
-          className="node-card p-3 mb-3"
-          whileHover={{ scale: 1.02 }}
-          transition={{ type: "spring", stiffness: 400 }}
-        >
-          <div className="flex items-center gap-2">
-            <span className="relative">
-              <div className="absolute inset-0 bg-amber-500/30 blur-md rounded-full" />
-              <Gem className="w-5 h-5 text-amber-500 relative z-10" />
-            </span>
-            {open && (
-              <div className="flex flex-col">
-                <span className="text-xs text-muted-foreground">Credits</span>
-                <span className="font-semibold text-foreground">{userDetails?.token ?? 0}</span>
-              </div>
-            )}
-          </div>
-        </motion.div>
 
         {/* Upgrade button */}
         {open && (
@@ -219,7 +200,7 @@ function AppSidebar() {
             >
               <span className="relative z-10 flex items-center gap-2">
                 <Zap className="w-4 h-4" />
-                Upgrade Plan
+                Welcome
               </span>
               {/* Animated shine effect */}
               <motion.span

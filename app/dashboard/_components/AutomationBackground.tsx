@@ -21,7 +21,7 @@ interface ConnectionLine {
   delay: number;
 }
 
-export function AutomationBackground() {
+export function AutomationBackground({ className = "-z-10" }: { className?: string }) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Generate floating nodes
@@ -47,7 +47,7 @@ export function AutomationBackground() {
   return (
     <div
       ref={containerRef}
-      className="fixed inset-0 pointer-events-none overflow-hidden -z-10"
+      className={`fixed inset-0 pointer-events-none overflow-hidden ${className}`}
       aria-hidden="true"
     >
       {/* Gradient overlay */}

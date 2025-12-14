@@ -79,69 +79,90 @@ export default function CreateAgentSection() {
             variants={containerVariants}
             initial="hidden"
             animate="visible"
-            className="space-y-8"
+            className="flex flex-col items-center text-center max-w-lg mx-auto"
         >
-            {/* Header Section */}
-            <motion.div variants={itemVariants} className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                <div>
-                    <h1 className="text-3xl font-bold tracking-tight">
-                        Welcome back
-                        <motion.span
-                            initial={{ opacity: 0, scale: 0.5 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            transition={{ delay: 0.5, type: "spring" }}
-                            className="inline-block ml-2"
-                        >
-                            <Sparkles className="w-6 h-6 text-primary inline" />
-                        </motion.span>
-                    </h1>
-                    <p className="text-muted-foreground mt-1">
-                        Your automation workflows are running smoothly
-                    </p>
+            {/* Icon with glow */}
+            <motion.div 
+                variants={itemVariants}
+                className="relative mb-6"
+            >
+                <div className="absolute inset-0 bg-primary/20 blur-2xl rounded-full scale-150" />
+                <div className="relative p-4 rounded-2xl bg-primary/10 border border-primary/20">
+                    <Sparkles className="w-10 h-10 text-primary" />
                 </div>
-                <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                    <Dialog open={openDialog} onOpenChange={setOpenDialog}>
-                        <DialogTrigger asChild>
-                            <Button 
-                                className="gap-2 shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-shadow"
-                                onClick={() => setOpenDialog(true)}
-                            >
-                                <Plus className="w-4 h-4" />
-                                    New Workflow
-                            </Button>
-                        </DialogTrigger>
-                        <DialogContent>
-                            <DialogHeader>
-                                <DialogTitle>Enter Your Agent Name</DialogTitle>
-                                <DialogDescription>
-                                    <Input 
-                                        placeholder="Agent Name" 
-                                        value={agentName}
-                                        onChange={(event) => setAgentName(event.target.value)}
-                                    />
-                                </DialogDescription>
-                            </DialogHeader>
-                            <DialogFooter>
-                                <DialogClose disabled={loader}>
-                                    <Button variant={'ghost'} className="cursor-pointer">Cancel</Button>
-                                </DialogClose>
-                                <Button variant={'default'} onClick={handleCreateAgent} disabled={loader || !agentName.trim()} className="cursor-pointer">
-                                    {loader ? (
-                                        <>
-                                            <Loader2Icon className="animate-spin mr-2"/>
-                                            Creating...
-                                        </>
-                                    ) : (
-                                        "Create Agent"
-                                    )}
-                                </Button>
-                            </DialogFooter>
-                        </DialogContent>    
-                    </Dialog>
-                </motion.div>
             </motion.div>
 
-           
+            {/* Heading */}
+            <motion.h1 
+                variants={itemVariants}
+                className="text-3xl md:text-4xl font-bold tracking-tight mb-3"
+            >
+                Create Your AI Workflow
+            </motion.h1>
+
+            {/* Description */}
+            <motion.p 
+                variants={itemVariants}
+                className="text-muted-foreground text-lg mb-8 leading-relaxed"
+            >
+                Build powerful automation workflows with AI agents. 
+                Connect APIs, process data, and automate tasks - all with a visual builder.
+            </motion.p>
+
+            {/* Create Button */}
+            <motion.div 
+                variants={itemVariants}
+                whileHover={{ scale: 1.02 }} 
+                whileTap={{ scale: 0.98 }}
+            >
+                <Dialog open={openDialog} onOpenChange={setOpenDialog}>
+                    <DialogTrigger asChild>
+                        <Button 
+                            size="lg"
+                            className="gap-2 px-8 shadow-lg shadow-primary/25 hover:shadow-primary/40 transition-all cursor-pointer"
+                            onClick={() => setOpenDialog(true)}
+                        >
+                            <Plus className="w-5 h-5" />
+                            New Workflow
+                        </Button>
+                    </DialogTrigger>
+                    <DialogContent>
+                        <DialogHeader>
+                            <DialogTitle>Enter Your Agent Name</DialogTitle>
+                            <DialogDescription>
+                                <Input 
+                                    placeholder="Agent Name" 
+                                    value={agentName}
+                                    onChange={(event) => setAgentName(event.target.value)}
+                                />
+                            </DialogDescription>
+                        </DialogHeader>
+                        <DialogFooter>
+                            <DialogClose disabled={loader}>
+                                <Button variant={'ghost'} className="cursor-pointer">Cancel</Button>
+                            </DialogClose>
+                            <Button variant={'default'} onClick={handleCreateAgent} disabled={loader || !agentName.trim()} className="cursor-pointer">
+                                {loader ? (
+                                    <>
+                                        <Loader2Icon className="animate-spin mr-2"/>
+                                        Creating...
+                                    </>
+                                ) : (
+                                    "Create Agent"
+                                )}
+                            </Button>
+                        </DialogFooter>
+                    </DialogContent>    
+                </Dialog>
+            </motion.div>
+
+            {/* Subtle hint */}
+            <motion.p 
+                variants={itemVariants}
+                className="text-sm text-muted-foreground/60 mt-6"
+            >
+                Your workflows will appear in AI Agents once created
+            </motion.p>
         </motion.div>
     )
 }
