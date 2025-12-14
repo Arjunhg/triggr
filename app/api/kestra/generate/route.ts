@@ -18,8 +18,6 @@ interface KestraFlow {
     }>;
     tasks: KestraTask[];
 }
-
-// Helper to sanitize IDs for Kestra (must be alphanumeric with underscores)
 function sanitizeId(id: string): string {
     return id.replace(/[^a-zA-Z0-9_]/g, '_').toLowerCase();
 }
@@ -65,12 +63,8 @@ function getExecutionOrder(nodes: NodeType[], edges: EdgeType[]): NodeType[] {
     return result;
 }
 
-// Helper to determine the AI provider config based on model string
-// Since Triggr uses OpenRouter as the central gateway for all AI models,
-// we always use OpenAI-compatible provider with OpenRouter base URL
+
 function getProviderConfig(modelString: string): Record<string, unknown> {
-    // OpenRouter uses OpenAI-compatible API for all models
-    // Models are in format: provider/model (e.g., google/gemini-2.5-flash-lite)
     return {
         type: 'io.kestra.plugin.ai.provider.OpenRouter',
         modelName: modelString || 'openai/gpt-4o-mini',
@@ -105,8 +99,6 @@ function nodeToKestraTask(node: NodeType, edges: EdgeType[], allNodes: NodeType[
             };
             
         case 'AgentNode': {
-            // Agent node becomes a Chat Completion task
-            // Get the actual model from settings
             const modelString = String(settings.model || 'gpt-4o-mini');
             const agentName = String(settings.name || nodeData.label || 'AI Agent');
             const instruction = String(settings.instruction || settings.systemPrompt || 'You are a helpful assistant.');

@@ -45,7 +45,7 @@ export default function HomePage() {
   ]
 
   return (
-    <main className="relative min-h-screen overflow-hidden bg-background text-foreground">
+    <main className="relative min-h-screen overflow-hidden text-foreground">
       {/* Animated Background */}
       <AutomationBackground className="-z-10 opacity-70" />
 

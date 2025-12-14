@@ -14,30 +14,17 @@ export async function POST(req: NextRequest) {
                 { status: 400 }
             );
         }
-
-        // Log the YAML for debugging
-        console.log("--- Generated Kestra YAML ---");
-        console.log(yaml);
-        console.log("----------------------------");
-
         const headers: Record<string, string> = {
             "Content-Type": "application/x-yaml",
         };
 
-        // Add Basic Authentication if credentials are provided
         if (KESTRA_USERNAME && KESTRA_PASSWORD) {
             const credentials = Buffer.from(`${KESTRA_USERNAME}:${KESTRA_PASSWORD}`).toString('base64');
             headers['Authorization'] = `Basic ${credentials}`;
         }
-
-        console.log("--- Generated Kestra YAML ---");
-        console.log(yaml); // <--- Add this line to see the YAML being sent
-        console.log("----------------------------");
-
-        // Send the YAML to Kestra API to create/update the flow
         const response = await fetch(`${KESTRA_BASE_URL}/api/v1/main/flows`, {
             method: "POST",
-            headers: headers, // Use the updated headers object
+            headers: headers, 
             body: yaml,
         });
 

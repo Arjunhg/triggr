@@ -9,7 +9,6 @@ import {
   SidebarHeader,
   SidebarMenuButton,
   SidebarMenuItem,
-  useSidebar,
 } from "@/components/ui/sidebar"
 import Image from "next/image";
 import Link from "next/link";
@@ -75,11 +74,10 @@ const glowVariants = {
 };
 
 function AppSidebar() {
-  const { open } = useSidebar();
   const pathname = usePathname();
 
   return (
-    <Sidebar className="border-r border-sidebar-border/50 bg-sidebar/80 backdrop-blur-xl">
+    <Sidebar collapsible="none" className="border-r border-sidebar-border/50 bg-sidebar/80 backdrop-blur-xl">
       <AutomationPattern className="opacity-30" />
       
       {/* Logo Section */}
@@ -92,23 +90,21 @@ function AppSidebar() {
           <div className="absolute inset-0 bg-primary/20 blur-lg rounded-full" />
           <Image src={'/logo.png'} alt="logo" width={56} height={56} className="relative z-10" />
         </motion.div>
-        {open && (
-          <motion.div
-            initial={{ opacity: 0, x: -10 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.3 }}
-            className="flex flex-col"
-          >
-            <h2 className="font-semibold text-lg tracking-tight text-gradient">Triggr</h2>
-            <span className="text-[10px] text-muted-foreground font-medium tracking-wider uppercase">Automation</span>
-          </motion.div>
-        )}
+        <motion.div
+          initial={{ opacity: 0, x: -10 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.3 }}
+          className="flex flex-col"
+        >
+          <h2 className="font-semibold text-lg tracking-tight text-gradient">Triggr</h2>
+          <span className="text-[10px] text-muted-foreground font-medium tracking-wider uppercase">Automation</span>
+        </motion.div>
       </div>
       
       <SidebarContent className="relative z-10">
         <SidebarGroup>
           <SidebarGroupLabel className="text-xs font-medium text-muted-foreground/70 uppercase tracking-wider px-4 mb-2">
-            {open ? 'Navigation' : ''}
+            Navigation
           </SidebarGroupLabel>
           <SidebarGroupContent className="space-y-1 px-2">
             {MenuOptions.map((menu, index) => {
@@ -125,7 +121,7 @@ function AppSidebar() {
                   <SidebarMenuItem className="list-none">
                     <SidebarMenuButton
                       asChild
-                      size={open ? 'lg' : "default"}
+                      size="default"
                       isActive={isActive}
                       className={`
                         relative group transition-all duration-300
@@ -151,16 +147,14 @@ function AppSidebar() {
                           }`} />
                         </span>
                         
-                        {open && (
-                          <span className={`font-medium transition-colors duration-300 ${
-                            isActive ? 'text-primary' : 'text-foreground/80 group-hover:text-foreground'
-                          }`}>
-                            {menu.title}
-                          </span>
-                        )}
+                        <span className={`font-medium transition-colors duration-300 ${
+                          isActive ? 'text-primary' : 'text-foreground/80 group-hover:text-foreground'
+                        }`}>
+                          {menu.title}
+                        </span>
                         
                         {/* Active indicator dot */}
-                        {isActive && open && (
+                        {isActive && (
                           <motion.span
                             initial={{ scale: 0 }}
                             animate={{ scale: 1 }}
@@ -181,34 +175,32 @@ function AppSidebar() {
 
       <SidebarFooter className="relative z-10 p-4 mb-4">
 
-        {open && (
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
+        >
+          <Button 
+            className="w-full relative group overflow-hidden bg-gradient-to-r from-primary to-accent hover:opacity-90 transition-opacity"
           >
-            <Button 
-              className="w-full relative group overflow-hidden bg-gradient-to-r from-primary to-accent hover:opacity-90 transition-opacity"
-            >
-              <span className="relative z-10 flex items-center gap-2">
-                <Zap className="w-4 h-4" />
-                Welcome
-              </span>
-              {/* Animated shine effect */}
-              <motion.span
-                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
-                initial={{ x: '-100%' }}
-                animate={{ x: '200%' }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  repeatDelay: 3,
-                  ease: "linear"
-                }}
-              />
-            </Button>
-          </motion.div>
-        )}
+            <span className="relative z-10 flex items-center gap-2">
+              <Zap className="w-4 h-4" />
+              Welcome
+            </span>
+            {/* Animated shine effect */}
+            <motion.span
+              className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
+              initial={{ x: '-100%' }}
+              animate={{ x: '200%' }}
+              transition={{
+                duration: 2,
+                repeat: Infinity,
+                repeatDelay: 3,
+                ease: "linear"
+              }}
+            />
+          </Button>
+        </motion.div>
       </SidebarFooter>
     </Sidebar>
   );

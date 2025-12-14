@@ -23,7 +23,6 @@ export async function POST(req: NextRequest) {
 
         // Add Basic Authentication if credentials are provided
         if (KESTRA_USERNAME && KESTRA_PASSWORD) {
-            console.log("Username and password for execution is:", KESTRA_USERNAME, KESTRA_PASSWORD); // Added log
             const credentials = Buffer.from(`${KESTRA_USERNAME}:${KESTRA_PASSWORD}`).toString('base64');
             headers['Authorization'] = `Basic ${credentials}`;
         }
@@ -36,10 +35,6 @@ export async function POST(req: NextRequest) {
         
         // If there are inputs, send them as form data
         if (inputs && Object.keys(inputs).length > 0) {
-            // Note: Kestra's API for execution inputs often expects Content-Type: multipart/form-data
-            // when using -F in curl. Your current FormData usage is correct for this.
-            // No explicit 'Content-Type' header is usually needed for FormData in fetch,
-            // as it sets it automatically with the correct boundary.
             const formData = new FormData();
             Object.entries(inputs).forEach(([key, value]) => {
                 formData.append(key, String(value));
