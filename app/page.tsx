@@ -45,9 +45,9 @@ export default function HomePage() {
   ]
 
   return (
-    <main className="relative min-h-screen overflow-hidden bg-background text-foreground">
+    <main className="relative min-h-screen overflow-hidden text-foreground">
       {/* Animated Background */}
-      <AutomationBackground className="-z-10" />
+      <AutomationBackground className="-z-10 opacity-70" />
 
       <div className="relative z-10 flex flex-col min-h-screen">
       {/* Header */}
@@ -56,7 +56,7 @@ export default function HomePage() {
           <Link href="/" className="flex items-center gap-3">
             <div className="relative">
               <div className="absolute inset-0 bg-primary/20 blur-lg rounded-full" />
-              <Image src="/logo.svg" alt="Triggr" width={32} height={32} className="relative z-10" />
+              <Image src="/logo.png" alt="Triggr" width={52} height={52} className="relative z-10" />
             </div>
             <span className="font-semibold text-lg tracking-tight">Triggr</span>
           </Link>
@@ -267,7 +267,7 @@ export default function HomePage() {
       <footer className="border-t border-border/50 bg-muted/30 py-8">
         <div className="container mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <Image src="/logo.svg" alt="Triggr" width={24} height={24} />
+            <Image src="/logo.png" alt="Triggr" width={54} height={54} />
             <span className="text-sm text-muted-foreground">
               © {new Date().getFullYear()} Triggr. All rights reserved.
             </span>
